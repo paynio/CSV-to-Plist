@@ -77,6 +77,9 @@
 
 - (void)parserDidBeginDocument:(CHCSVParser *)parser
 {
+    self.fields = nil;
+    self.currentRow = nil;
+    self.outputArray = nil;
 }
 
 - (void)parserDidEndDocument:(CHCSVParser *)parser
