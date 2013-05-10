@@ -7,9 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CHCSVParser.h"
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, CHCSVParserDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
+- (IBAction)chooseFilePressed:(id)sender;
 
 @end
