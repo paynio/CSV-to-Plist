@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#define DATES_AS_STRINGS            YES
+
 @interface AppDelegate ()
 {
     BOOL readingTopLine;
@@ -129,18 +131,21 @@
     {
         // First check if object is a date
         
-        if (!self.detector)
-            self.detector = [NSDataDetector dataDetectorWithTypes:(NSTextCheckingTypes)NSTextCheckingTypeDate error:nil];
-        NSUInteger numMatches = [self.detector numberOfMatchesInString:field options:0 range:NSMakeRange(0, [field length])];
-        if (numMatches > 0)
+        if (!DATES_AS_STRINGS)
         {
-            NSArray *matches = [self.detector matchesInString:field
-                                                 options:0
-                                                   range:NSMakeRange(0, [field length])];
-            for (NSTextCheckingResult *match in matches)
+            if (!self.detector)
+                self.detector = [NSDataDetector dataDetectorWithTypes:(NSTextCheckingTypes)NSTextCheckingTypeDate error:nil];
+            NSUInteger numMatches = [self.detector numberOfMatchesInString:field options:0 range:NSMakeRange(0, [field length])];
+            if (numMatches > 0)
             {
-                [self.currentRow insertObject:match.date atIndex:fieldIndex];
-                return;
+                NSArray *matches = [self.detector matchesInString:field
+                                                     options:0
+                                                       range:NSMakeRange(0, [field length])];
+                for (NSTextCheckingResult *match in matches)
+                {
+                    [self.currentRow insertObject:match.date atIndex:fieldIndex];
+                    return;
+                }
             }
         }
         
@@ -158,12 +163,12 @@
         
         // Then check for a bool
         
-        if ([[field uppercaseString] isEqualToString:@"YES"] || [[field uppercaseString] isEqualToString:@"TRUE"])
+        if ([[field uppercaseString] isEqualToString:@"YES"] || [[field uppercaseString] isEqualToString:@"TRUE"] || [[field uppercaseString] isEqualToString:@"Y"])
         {
             [self.currentRow insertObject:@YES atIndex:fieldIndex];
             return;
         }
-        if ([[field uppercaseString] isEqualToString:@"NO"] || [[field uppercaseString] isEqualToString:@"FALSE"])
+        if ([[field uppercaseString] isEqualToString:@"NO"] || [[field uppercaseString] isEqualToString:@"FALSE"] || [[field uppercaseString] isEqualToString:@"N"])
         {
             [self.currentRow insertObject:@NO atIndex:fieldIndex];
             return;
