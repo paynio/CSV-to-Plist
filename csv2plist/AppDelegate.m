@@ -174,6 +174,15 @@
             return;
         }
         
+        // Check if " is at end and start of string expression and remove
+        // This happens with some csv output e.g. if there is a , in the string expression
+        
+        if ([field hasPrefix:@"\""] && [field hasSuffix:@"\""])
+        {
+            NSRange range = NSMakeRange(1, [field length] - 2);
+            field = [field substringWithRange:range];
+        }
+                
         // If none of the above, save as a string
 
         [self.currentRow insertObject:field atIndex:fieldIndex];
