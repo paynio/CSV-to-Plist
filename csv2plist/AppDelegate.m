@@ -150,12 +150,12 @@
         }
         
         // Then check object is a number
-        
+                
         if (!self.numberFormatter)
             self.numberFormatter = [[NSNumberFormatter alloc]init];
         
         NSNumber *num = [self.numberFormatter numberFromString:field];
-        if (num)
+        if (num && [field characterAtIndex:0] != '0')                       // If the first character is '0', then view it as a string
         {
             [self.currentRow insertObject:num atIndex:fieldIndex];
             return;
